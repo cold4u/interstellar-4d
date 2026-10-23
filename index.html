@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INTERSTELLAR // 4D Hyperspace Tesseract</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800&family=Space+Grotesk:wght@300;400;600;700&family=JetBrains+Mono:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Canvas for 4D Projection Rendering -->
+    <canvas id="hyperCanvas"></canvas>
+
+    <!-- Starfield & Gravitational Lensing Canvas -->
+    <canvas id="bgCanvas"></canvas>
+
+    <!-- Cinematic Entry / Autoplay Audio Gate Overlay -->
+    <div id="introOverlay" class="intro-overlay">
+        <div class="intro-content">
+            <div class="badge">MISSION: ENDURANCE // GARGANTUA SYSTEM</div>
+            <h1 class="glitch-title" data-text="INTERSTELLAR">INTERSTELLAR</h1>
+            <p class="intro-subtitle">FOUR-DIMENSIONAL SPATIOTEMPORAL MANIFOLD</p>
+            
+            <div class="quote-box">
+                <p class="quote">"Do not go gentle into that good night.<br>Rage, rage against the dying of the light."</p>
+                <span class="quote-author">— Dylan Thomas / Dr. Brand</span>
+            </div>
+
+            <button id="enterBtn" class="cta-btn">
+                <span class="btn-glow"></span>
+                <span class="btn-text">INITIALIZE WARP & PLAY SOUNDTRACK</span>
+                <span class="btn-icon">⚡</span>
+            </button>
+            <p class="enter-tip">Click to initiate hyperspace projection & activate Hans Zimmer BGM</p>
+        </div>
+    </div>
+
+    <!-- UI HUD & Controls -->
+    <header class="hud-header">
+        <div class="brand-zone">
+            <div class="status-indicator live"></div>
+            <div>
+                <div class="brand-title">TESSERACT 4D // HYPER-ENGINE</div>
+                <div class="brand-sub">ENDURANCE TELEMETRY • SINGULARITY PROXIMITY</div>
+            </div>
+        </div>
+
+        <div class="audio-control-bar">
+            <button id="audioToggleBtn" class="audio-hud-btn" title="Toggle Interstellar BGM">
+                <span id="audioIcon" class="audio-icon">🔊</span>
+                <span id="audioLabel" class="audio-label">BGM: PLAYING</span>
+            </button>
+            <div class="audio-visualizer-mini">
+                <canvas id="audioVisualizerCanvas" width="90" height="24"></canvas>
+            </div>
+            <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.75" class="vol-slider" title="Volume">
+        </div>
+    </header>
+
+    <!-- Left HUD: Coordinates & Mathematical Telemetry -->
+    <aside class="hud-panel left-panel">
+        <div class="panel-header">
+            <span class="panel-tag">[4D TELEMETRY]</span>
+            <span class="panel-id">SEC-05</span>
+        </div>
+
+        <div class="telemetry-block">
+            <div class="telemetry-label">RELATIVISTIC TIME DILATION</div>
+            <div class="time-dilation">
+                <span class="val" id="dilationValue">1s Miller = 7.10 Years Earth</span>
+            </div>
+            <div class="earth-time-counter">
+                Earth Time Elapsed: <span id="earthYearsPassed" class="highlight">0.00</span> yrs
+            </div>
+        </div>
+
+        <div class="telemetry-block">
+            <div class="telemetry-label">CURRENT 4D MANIFOLD</div>
+            <div class="geometry-selector">
+                <button class="geo-btn active" data-geo="tesseract">Tesseract (8-Cell)</button>
+                <button class="geo-btn" data-geo="hexadecachoron">16-Cell (Cross-Polytope)</button>
+                <button class="geo-btn" data-geo="icositetrachoron">24-Cell (Hyperdiamond)</button>
+                <button class="geo-btn" data-geo="cliffordTorus">Clifford Torus (4D Surface)</button>
+                <button class="geo-btn" data-geo="calabiYau">Calabi-Yau Projection</button>
+            </div>
+        </div>
+
+        <div class="telemetry-block">
+            <div class="telemetry-label">4D VERTICES MATRIX (x, y, z, w)</div>
+            <div class="matrix-display" id="matrixDisplay">
+                <!-- Dynamically populated 4D coordinates -->
+            </div>
+        </div>
+
+        <div class="telemetry-block mini-quote">
+            <p>"Time is relative, okay? It can stretch and it can squeeze... but it can't run backwards."</p>
+        </div>
+    </aside>
+
+    <!-- Right HUD: Hyper-Dimensional Controls -->
+    <aside class="hud-panel right-panel">
+        <div class="panel-header">
+            <span class="panel-tag">[4D ROTATION PLANES]</span>
+            <span class="panel-id">4D-WARP</span>
+        </div>
+
+        <p class="panel-explainer">
+            In 4D space, objects rotate around <strong>planes</strong>, not axes. Rotations involving <strong>W</strong> move matter through the 4th spatial dimension.
+        </p>
+
+        <div class="control-group">
+            <div class="slider-header">
+                <span>X-W Plane (Hyper-Warp)</span>
+                <span id="val-xw" class="slider-val">0.012</span>
+            </div>
+            <input type="range" id="rot-xw" min="-0.05" max="0.05" step="0.001" value="0.012">
+        </div>
+
+        <div class="control-group">
+            <div class="slider-header">
+                <span>Y-W Plane (Hyper-Roll)</span>
+                <span id="val-yw" class="slider-val">0.008</span>
+            </div>
+            <input type="range" id="rot-yw" min="-0.05" max="0.05" step="0.001" value="0.008">
+        </div>
+
+        <div class="control-group">
+            <div class="slider-header">
+                <span>Z-W Plane (Hyper-Pitch)</span>
+                <span id="val-zw" class="slider-val">0.005</span>
+            </div>
+            <input type="range" id="rot-zw" min="-0.05" max="0.05" step="0.001" value="0.005">
+        </div>
+
+        <div class="control-group">
+            <div class="slider-header">
+                <span>X-Y Plane (3D Spin)</span>
+                <span id="val-xy" class="slider-val">0.006</span>
+            </div>
+            <input type="range" id="rot-xy" min="-0.05" max="0.05" step="0.001" value="0.006">
+        </div>
+
+        <div class="control-group">
+            <div class="slider-header">
+                <span>Y-Z Plane (3D Pitch)</span>
+                <span id="val-yz" class="slider-val">0.004</span>
+            </div>
+            <input type="range" id="rot-yz" min="-0.05" max="0.05" step="0.001" value="0.004">
+        </div>
+
+        <div class="control-group">
+            <div class="slider-header">
+                <span>4D Projection Distance (d₄)</span>
+                <span id="val-d4" class="slider-val">2.8</span>
+            </div>
+            <input type="range" id="proj-d4" min="1.4" max="6.0" step="0.1" value="2.8">
+        </div>
+
+        <div class="control-group">
+            <div class="slider-header">
+                <span>Hyperspace Slice (W-Cutoff)</span>
+                <span id="val-wslice" class="slider-val">0.00</span>
+            </div>
+            <input type="range" id="w-slice" min="-2.0" max="2.0" step="0.05" value="0.00">
+        </div>
+
+        <div class="preset-buttons">
+            <button id="btnWarp" class="sub-btn">Gargantua Singularity</button>
+            <button id="btnStable" class="sub-btn">Stable Orbit</button>
+            <button id="btnReset" class="sub-btn">Reset 4D</button>
+        </div>
+
+        <div class="color-themes">
+            <span class="theme-label">COLOR PALETTE:</span>
+            <div class="theme-options">
+                <button class="theme-btn active" data-theme="gargantua" title="Gargantua Gold" style="--c: #ffaa33;"></button>
+                <button class="theme-btn" data-theme="cyan" title="Tesseract Cyan" style="--c: #00ffff;"></button>
+                <button class="theme-btn" data-theme="quantum" title="Quantum Violet" style="--c: #c77dff;"></button>
+                <button class="theme-btn" data-theme="monolith" title="Monolith White" style="--c: #ffffff;"></button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Bottom HUD Bar -->
+    <footer class="hud-footer">
+        <div class="footer-item">
+            <span class="label">DRAG MOUSE:</span>
+            <span class="val">3D Camera Orbit</span>
+        </div>
+        <div class="footer-item">
+            <span class="label">SCROLL:</span>
+            <span class="val">Zoom Field</span>
+        </div>
+        <div class="footer-item">
+            <span class="label">SOUNDTRACK:</span>
+            <span class="val">"Cornfield Chase" & "No Time For Caution" (Hans Zimmer)</span>
+        </div>
+        <div class="footer-item github-link-item">
+            <a href="https://github.com" target="_blank" id="ghRepoLink" class="gh-link">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+                GitHub Pages Ready
+            </a>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="audio.js"></script>
+    <script src="four-dimension.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
