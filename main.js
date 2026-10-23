@@ -37,7 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    let accretionAngle = 0;
     function renderCosmicBackground(audioPulse = 0) {
         bgCtx.fillStyle = '#020408';
         bgCtx.fillRect(0, 0, bgWidth, bgHeight);
@@ -45,34 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const cx = bgWidth / 2;
         const cy = bgHeight / 2;
 
-        // Draw Gargantua Accretion Disk Glow
-        accretionAngle += 0.002;
-        const diskRadius = Math.min(bgWidth, bgHeight) * 0.42;
-
-        const grad = bgCtx.createRadialGradient(cx, cy, 30, cx, cy, diskRadius);
-        grad.addColorStop(0, 'rgba(0, 0, 0, 0.95)');
-        grad.addColorStop(0.2, 'rgba(255, 120, 20, 0.12)');
-        grad.addColorStop(0.45, 'rgba(255, 180, 50, 0.07)');
-        grad.addColorStop(0.8, 'rgba(30, 60, 120, 0.04)');
-        grad.addColorStop(1, 'rgba(2, 4, 8, 0)');
-
-        bgCtx.fillStyle = grad;
-        bgCtx.beginPath();
-        bgCtx.arc(cx, cy, diskRadius, 0, Math.PI * 2);
-        bgCtx.fill();
-
-        // Gravitational Lensing Ring (Photosphere)
-        bgCtx.save();
-        bgCtx.translate(cx, cy);
-        bgCtx.rotate(accretionAngle);
-        bgCtx.beginPath();
-        bgCtx.ellipse(0, 0, diskRadius * 0.55, diskRadius * 0.14, 0.25, 0, Math.PI * 2);
-        bgCtx.strokeStyle = `rgba(255, 190, 80, ${0.18 + audioPulse * 0.2})`;
-        bgCtx.lineWidth = 3 + audioPulse * 4;
-        bgCtx.shadowColor = '#ffaa33';
-        bgCtx.shadowBlur = 20;
-        bgCtx.stroke();
-        bgCtx.restore();
+        // Clean starfield with warp motion without any obstructive center circle or overlay
 
         // Starfield with warp motion
         for (let i = 0; i < stars.length; i++) {
